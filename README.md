@@ -1,4 +1,4 @@
-# -NativePayload_DNS2
+# NativePayload_DNS2
  C# Code for transferring Backdoor Payloads by DNS Traffic (A Records) and Bypassing Anti-viruses 
  
  C# Code and Article with PDF,HTML formats
