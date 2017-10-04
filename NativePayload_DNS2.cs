@@ -15,14 +15,14 @@ namespace NativePayload_DNS2
            
             Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.WriteLine();
-            Console.WriteLine("NativePayload_DNS2 , Backdoor Payload Exfiltration by DNS Traffic (A Records)");
+            Console.WriteLine("NativePayload_DNS2 , Backdoor Payload Transferring by DNS Traffic (A Records)");
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine("Published by Damon Mohammadbagher Sep 2017");
             if (args[0].ToUpper() == "HELP")
             {
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.WriteLine();
-                Console.WriteLine("[!] NativePayload_DNS2 , Backdoor Payload Exfiltration by DNS Traffic (A Records)");
+                Console.WriteLine("[!] NativePayload_DNS2 , Backdoor Payload Transferring by DNS Traffic (A Records)");
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
                 Console.WriteLine("[!] Syntax 1: Creating Meterperter Payload for Transferring by DNS A records");
                 Console.ForegroundColor = ConsoleColor.Cyan;
@@ -156,7 +156,7 @@ namespace NativePayload_DNS2
 
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine();
-                Console.Write("[>] Exfiltration Payload/Text Data is : ");
+                Console.Write("[>] Transferred Payload/Text Data is : ");
                 Console.ForegroundColor = ConsoleColor.Gray;
                 Console.Write(UTF8Encoding.UTF8.GetChars(_Exfiltration_DATA_Bytes_A_Records));                
                 Console.WriteLine();
