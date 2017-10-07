@@ -9,6 +9,8 @@
  
  link2 Article Published : i will publish Article in github with PDF,HTML formats very soon.
  
+ Video :  https://www.youtube.com/watch?v=B-vR7jKXyts
+ 
  
  Article is from Ebook "Bypassing Anti Viruses by C#.NET Programming" , Chapter 4 : Exfiltration/Transferring Technique by DNS Traffic (A Records)
  
