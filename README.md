@@ -4,7 +4,7 @@
  
  Published by Damon Mohammadbagher (Sep-Oct 2017)
  
- C# Code (ver 2.0) Ready : https://github.com/DamonMohammadbagher/NativePayload_DNS2
+ C# Code (ver 2.0) : https://github.com/DamonMohammadbagher/NativePayload_DNS2
  
  link1 Article Published (A Records) : https://www.peerlyst.com/posts/exfiltration-technique-by-dns-traffic-a-records-damon-mohammadbagher
  
