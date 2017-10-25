@@ -7,6 +7,7 @@
  C# Code (ver 2.0) Ready : https://github.com/DamonMohammadbagher/NativePayload_DNS2
  
  link1 Article Published (A Records) : https://www.peerlyst.com/posts/exfiltration-technique-by-dns-traffic-a-records-damon-mohammadbagher
+ 
  link2 Article Published (Exfiltration and PTR Records) : https://www.peerlyst.com/posts/exfiltrationand-uploading-data-by-dns-traffic-ptr-records-damon-mohammadbagher
  
  
