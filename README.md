@@ -14,9 +14,9 @@
  
  Note: how to compile C# codes syntax :
  
- Developer Command Prompt for VS2015 : c:\> csc.exe  /out:NativePayload_DNS2.exe   NativePayload_DNS2.cs
+ Developer Command Prompt for VS2015 : c:\\> csc.exe  /out:NativePayload_DNS2.exe   NativePayload_DNS2.cs
  
- Developer Command Prompt for VS2015 : c:\> csc.exe  /out:LogReader.exe   LogReader.cs
+ Developer Command Prompt for VS2015 : c:\\> csc.exe  /out:LogReader.exe   LogReader.cs
  
  Video 1 (A Records only) :  https://www.youtube.com/watch?v=B-vR7jKXyts
  
