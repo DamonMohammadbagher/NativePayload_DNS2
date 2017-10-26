@@ -12,7 +12,7 @@
  
  Note: for using LogReader.exe tool and Exfiltration via DNS PTR Records by NativePayload_DNS2.exe tool you should read "Link2" Article. (recommended)
  
- Note: Compiling C# Codes syntax :
+ Note: how to compile C# codes syntax :
  
  Developer Command Prompt for VS2015 : c:\> csc.exe  /out:NativePayload_DNS2.exe   NativePayload_DNS2.cs
  
