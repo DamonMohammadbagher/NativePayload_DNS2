@@ -166,7 +166,7 @@ echo
 			tput setaf 9;
 			echo "[!] Syntax : NativePayload_DNS2.sh -d getdata domain_name DnsMasq_IPv4"
 			echo
-			echo "[>] DNSMASQ Satarted by DNSHOST.TXT File"
+			echo "[>] DNSMASQ Started by DNSHOST.TXT File"
 			echo
 			tput setaf 9;
 			`dnsmasq --no-hosts --no-daemon --log-queries -H DnsHost.txt`
