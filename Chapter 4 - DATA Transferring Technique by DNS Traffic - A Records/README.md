@@ -6,7 +6,15 @@ eBook : Bypassing Anti Viruses by C#.NET Programming
 
 eBook chapter 4 , PDF Download : https://github.com/DamonMohammadbagher/eBook-BypassingAVsByCSharp/tree/master/CH4
 
-Related Video : https://www.youtube.com/watch?v=TjOTdxnyvV0
+eBook chapter 5 , PDF Download : https://github.com/DamonMohammadbagher/eBook-BypassingAVsByCSharp/tree/master/CH5
+
+Related Video : 
+
+Video 1 for chapter 4: https://www.youtube.com/watch?v=TjOTdxnyvV0
+
+Video 2 for chapter 5: https://www.youtube.com/watch?v=zKUg_0LC9fk
+
+
 
 Warning :Don't Use "www.virustotal.com" or something like that , Never Ever ;D
 
