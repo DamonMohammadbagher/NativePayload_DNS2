@@ -26,3 +26,4 @@
  
  Supporting .NET 2.0 , 3.0 , 3.5 , 4.0 (Only)
  
+ <p><a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/DamonMohammadbagher/NativePayload_DNS2"/></a></p>
